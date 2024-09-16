@@ -8,14 +8,46 @@ function createHeart() {
     heart.style.animationDuration = (Math.random() * 3) + 2 + "s";
     body.appendChild(heart);
 }
+
+// Revert to original creation interval
 setInterval(createHeart, 100);
 
+// Revert to original maximum number of hearts
 setInterval(function () {
     const heartArr = document.querySelectorAll(".fa-heart");
     if (heartArr.length > 200) {
         heartArr[0].remove();
     }
 }, 100);
+
+// Function to make an element resizable
+function makeResizable(element) {
+    const resizeHandle = document.createElement('div');
+    resizeHandle.className = 'resize-handle';
+    element.appendChild(resizeHandle);
+
+    let startX, startY, startWidth, startHeight;
+
+    resizeHandle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        startX = e.clientX;
+        startY = e.clientY;
+        startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10);
+        startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10);
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    });
+
+    function onMouseMove(e) {
+        element.style.width = (startWidth + e.clientX - startX) + 'px';
+        element.style.height = (startHeight + e.clientY - startY) + 'px';
+    }
+
+    function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+}
 
 // Function to create a new note
 function createNote() {
@@ -54,12 +86,22 @@ function createNote() {
     };
     noteCard.appendChild(saveButton);
 
+    // Create delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'delete-button';
+    deleteButton.innerHTML = '&times;'; // Cross icon
+    deleteButton.onclick = function() {
+        deleteNote(noteCard);
+    };
+    noteCard.appendChild(deleteButton);
+
     // Append the new note to the grid
     const noteGrid = document.getElementById('note-grid');
     noteGrid.appendChild(noteCard);
 
-    // Make the new note draggable
+    // Make the new note draggable and resizable
     makeDraggable(noteCard);
+    makeResizable(noteCard);
 
     // Save all notes to local storage
     saveAllNotesToLocalStorage();
@@ -67,6 +109,12 @@ function createNote() {
     // Clear input fields
     document.getElementById('note-text').value = '';
     document.getElementById('note-label').value = '';
+}
+
+// Function to delete a note
+function deleteNote(noteCard) {
+    noteCard.remove();
+    saveAllNotesToLocalStorage(); // Update local storage
 }
 
 // Function to save all notes to local storage
@@ -127,9 +175,19 @@ function loadNotesFromLocalStorage() {
         };
         noteCard.appendChild(saveButton);
 
+        // Create delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-button';
+        deleteButton.innerHTML = '&times;'; // Cross icon
+        deleteButton.onclick = function() {
+            deleteNote(noteCard);
+        };
+        noteCard.appendChild(deleteButton);
+
         // Append note card to the grid
         noteGrid.appendChild(noteCard);
         makeDraggable(noteCard);
+        makeResizable(noteCard);
 
         // Debugging
         console.log(`Loaded note with ID ${noteCard.id}:`, note);
@@ -144,7 +202,7 @@ function makeDraggable(element) {
         isDragging = true;
         offsetX = e.clientX - element.getBoundingClientRect().left;
         offsetY = e.clientY - element.getBoundingClientRect().top;
-
+        element.classList.add('dragging'); // Add dragging class
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
     });
@@ -159,23 +217,21 @@ function makeDraggable(element) {
 
     function onMouseUp() {
         isDragging = false;
+        element.classList.remove('dragging'); // Remove dragging class
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
     }
 }
 
-// Load notes from local storage when the window loads
+// Load notes from local storage and theme settings when the window loads
 window.onload = function() {
-    document.getElementById('note-label').value = '';
     loadNotesFromLocalStorage();
-};
-
-document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme') || '';
     document.body.setAttribute('data-theme', savedTheme);
     updateThemeIcons(savedTheme);
-});
+};
 
+// Handle theme toggling
 document.getElementById('toggle-theme').addEventListener('click', () => {
     const currentTheme = document.body.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? '' : 'dark';
@@ -197,12 +253,3 @@ function updateThemeIcons(theme) {
         document.getElementById('moon-icon').style.opacity = '0';
     }
 }
-
-// Load the saved theme when the page loads
-window.onload = function() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        document.body.setAttribute('data-theme', savedTheme);
-    }
-    loadNotesFromLocalStorage();
-};
