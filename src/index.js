@@ -30,6 +30,26 @@ function addModalEventListeners() {
 // Call this function to add event listeners when the page loads
 addModalEventListeners();
 
+document.addEventListener('DOMContentLoaded', () => {
+    const addNoteBtn = document.getElementById('add-note-btn');
+    const noteInput = document.getElementById('note-input');
+    const cancelNoteBtn = document.getElementById('cancel-note-btn');
+
+    // Toggle note input visibility
+    addNoteBtn.addEventListener('click', () => {
+        if (noteInput.classList.contains('expanded')) {
+            noteInput.classList.remove('expanded');
+        } else {
+            noteInput.classList.add('expanded');
+        }
+    });
+
+    // Cancel button to hide the note input
+    cancelNoteBtn.addEventListener('click', () => {
+        noteInput.classList.remove('expanded');
+    });
+});
+
 const body = document.querySelector("body");
 // Function to create decorative hearts
 function createHeart() {

@@ -13,12 +13,23 @@
         <input type="text" id="search-bar" placeholder="Search notes...">
     </div>
     
-    <div class="note-input">
-        <input type="text" id="note-label" placeholder="Label" />
-        <input type="text" id="note-text" placeholder="Take a note..." /><br>
-        
-        <button onclick="createNote()">Add Note</button>
+    <!-- Add Note Button -->
+    <div class="fab-container">
+        <button id="add-note-btn">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
+
+    <!-- Note Input Fields -->
+    <div class="note-input" id="note-input">
+        <input type="text" id="note-label" placeholder="Label" />
+        <input type="text" id="note-text" placeholder="Take a note..." />
+        <div class="note-actions">
+            <button onclick="createNote()">Save</button>
+            <button id="cancel-note-btn">Cancel</button>
+        </div>
+    </div>
+
     <div id="note-grid" class="note-grid"></div>
 
     <div class="theme-switcher">
@@ -27,14 +38,15 @@
             <i id="moon-icon" class="fas fa-moon"></i>
         </button>
     </div>
+
     <!-- Modal Structure -->
     <div id="custom-modal" class="modal">
         <div class="modal-content">
             <span id="modal-close" class="modal-close">&times;</span>
-        <p id="modal-message">Please enter some text.</p>
-        <button id="modal-ok">OK</button>
+            <p id="modal-message">Please enter some text.</p>
+            <button id="modal-ok">OK</button>
+        </div>
     </div>
-</div>
 
     <script src="https://kit.fontawesome.com/4f3ce16e3e.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
