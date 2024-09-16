@@ -1,13 +1,94 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 
+/* Default theme */
+:root {
+    --background-color: #faf6f4;
+    --note-card-background: #f7e8e8;
+    --text-color: #555;
+    --button-background: linear-gradient(45deg, #c99597, #c99597);
+    --button-hover-background: linear-gradient(45deg, #c99597, #c99597);
+    --heart-start-color: #AA336A; /* Dark pink */
+    --heart-mid-color: #f1d8d9; /* Light pink */
+    --heart-end-color: rgb(255, 0, 0); /* Red */
+}
+
+/* Dark Theme */
+[data-theme='dark'] {
+    --background-color: #1b0c1a;
+    --note-card-background: #fadcd5;
+    --button-background: linear-gradient(45deg, #783d4b, #783d4b);
+    --button-hover-background: linear-gradient(45deg, #783d4b, #783d4b);
+    --text-color: #555;
+    --heart-start-color: #bd96a8; /* Light pink */
+    --heart-mid-color: #a2617e; /* Pink */
+    --heart-end-color: #6d3c52; /* Red warm pink */
+}
+
 body {
     font-family: 'Poppins', sans-serif;
-    background: #faf6f4; /* Change to solid color */
+    background: var(--background-color);
     margin: 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative; /* Ensure the body has relative positioning for the button */
+    overflow: hidden; /* Prevent scrollbar from appearing */
+}
+
+/* Style for the theme switcher button */
+.theme-switcher {
+    position: fixed; /* Fixed position to stay in the top right corner */
+    top: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+}
+
+#toggle-theme {
+    background: var(--button-background);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 10; /* Ensure it's on top of other elements */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+#moon-icon,
+#sun-icon {
+    position: absolute;
+    transition: opacity 0.3s ease;
+}
+
+/* Hide the sun icon in default theme */
+#sun-icon {
+    opacity: 0;
+}
+
+/* Show the sun icon in dark theme */
+[data-theme='dark'] #sun-icon {
+    opacity: 1;
+}
+
+/* Show the moon icon in default theme */
+[data-theme='dark'] #moon-icon {
+    opacity: 0;
+}
+
+/* Hover effect for the theme switcher button */
+#toggle-theme:hover {
+    background: var(--button-hover-background);
+    transform: translateY(-2px);
+}
+
+/* Active effect for the theme switcher button */
+#toggle-theme:active {
+    transform: translateY(0);
 }
 
 .note-input {
@@ -33,7 +114,7 @@ body {
 }
 
 .note-card {
-    background-color: #f7e8e8; /* Ensure valid hex color code */
+    background-color: var(--note-card-background);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -45,7 +126,7 @@ body {
 .note-card .note-label {
     font-size: 12px;
     font-weight: bold;
-    color: #555;
+    color: var(--text-color);
     margin-bottom: 5px;
 }
 
@@ -68,32 +149,33 @@ body {
     margin-top: 10px;
 }
 
+/* Hearts animation */
 .fa-heart {
     font-size: 25px;
     position: absolute;
     animation: heartMove linear 1;
-    top: -10vh;
+    top: -10vh; /* Start position */
     z-index: 0;
 }
 
 @keyframes heartMove {
     0% {
-        transform: translateY(-10vh);
-        color: #f1d8d9; /* Red */
+        transform: translateY(-10vh); /* Start position */
+        color: var(--heart-start-color);
     }
     50% {
-        color: #f1d8d9; /* Light pink */
+        color: var(--heart-mid-color);
     }
     100% {
-        transform: translateY(110vh);
-        color: rgb(255, 0, 0); /* Red */
+        transform: translateY(100vh); /* End position just below viewport */
+        color: var(--heart-end-color);
     }
 }
 
 /* Style for the "Save as Image" button and "Add Note" button */
 .note-card button,
 .note-input button {
-    background: linear-gradient(45deg, #c99597, #c99597);
+    background: var(--button-background);
     color: white;
     border: none;
     border-radius: 5px;
@@ -108,7 +190,7 @@ body {
 /* Hover effect for the buttons */
 .note-card button:hover,
 .note-input button:hover {
-    background: linear-gradient(45deg, #5a4abf, #6a5ace);
+    background: var(--button-hover-background);
     transform: translateY(-2px);
 }
 
