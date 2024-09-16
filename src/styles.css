@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(45deg, pink, violet);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.note-input {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.note-input input {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    margin-right: 10px;
+}
+
+.note-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.note-card {
+    background-color: transparent;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    word-wrap: break-word;
+}
+
+
+.note-card .note-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.note-card .note-content {
+    margin-top: 10px;
+}
+
+.note-card .note-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.note-card .note-content ul li {
+    margin-bottom: 5px;
+}
+
+.note-card img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.fa-heart {
+    font-size: 25px;
+    position: absolute;
+    animation: heartMove linear 1;
+    top: -10vh;
+    z-index: 0;
+}
+
+@keyframes heartMove {
+    0% {
+        transform: translateY(-10vh);
+        color: rgb(255, 255, 0); /* yellow */
+    }
+    50% {
+        color: rgb(60, 0, 60); /* purple */
+    }
+    100% {
+        transform: translateY(110vh);
+        color: rgb(255, 255, 0); /* yellow */
+    }
+}
+
+/* Style for the "Save as Image" button and "Add Note" button */
+.note-card button,
+.note-input button {
+    background: linear-gradient(45deg, #6a5acd, #7b68ee);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+/* Hover effect for the buttons */
+.note-card button:hover,
+.note-input button:hover {
+    background: linear-gradient(45deg, #5a4abf, #6a5ace);
+    transform: translateY(-2px);
+}
+
+/* Active effect for the buttons */
+.note-card button:active,
+.note-input button:active {
+    transform: translateY(0);
+}
+
