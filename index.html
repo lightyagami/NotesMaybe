@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="note-input">
-        <input type="text" id="note-label" placeholder="Label (optional)" />
+        <input type="text" id="note-label" placeholder="Label" />
         <input type="text" id="note-text" placeholder="Take a note..." /><br>
         
         <button onclick="createNote()">Add Note</button>
@@ -18,10 +18,6 @@
     <script src="https://kit.fontawesome.com/4f3ce16e3e.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="src/index.js"></script>
-    <script>
-        window.onload = function() {
-            document.getElementById('note-label').value = '';
-        };
-    </script>
+
 </body>
 </html>
