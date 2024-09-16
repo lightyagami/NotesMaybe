@@ -9,16 +9,39 @@ function createHeart() {
     body.appendChild(heart);
 }
 
-// Revert to original creation interval
-setInterval(createHeart, 100);
+// Function to manage the maximum number of hearts
+function manageHearts(maxHearts) {
+    setInterval(function () {
+        const heartArr = document.querySelectorAll(".fa-heart");
+        if (heartArr.length > maxHearts) {
+            heartArr[0].remove();
+        }
+    }, 100);
+}
 
-// Revert to original maximum number of hearts
-setInterval(function () {
-    const heartArr = document.querySelectorAll(".fa-heart");
-    if (heartArr.length > 200) {
-        heartArr[0].remove();
-    }
-}, 100);
+// Determine if the device is mobile
+function isMobile() {
+    return window.matchMedia("(max-width: 600px)").matches;
+}
+
+// Apply different styles for mobile devices
+function applyMobileStyles() {
+    const hearts = document.querySelectorAll(".fa-heart");
+    hearts.forEach(heart => {
+        heart.style.fontSize = '20px'; // Smaller hearts on mobile
+        heart.style.opacity = '0.5'; // Less visible hearts on mobile
+    });
+}
+
+// Set heart creation and styling based on device type
+if (isMobile()) {
+    setInterval(createHeart, 100);
+    manageHearts(200);
+    applyMobileStyles(); // Apply mobile-specific styles
+} else {
+    setInterval(createHeart, 100);
+    manageHearts(200);
+}
 
 // Function to make an element resizable
 function makeResizable(element) {
@@ -26,27 +49,67 @@ function makeResizable(element) {
     resizeHandle.className = 'resize-handle';
     element.appendChild(resizeHandle);
 
-    let startX, startY, startWidth, startHeight;
+    let startX, startY, startWidth, startHeight, isResizing = false;
 
-    resizeHandle.addEventListener('mousedown', (e) => {
+    // Mouse events
+    function onMouseDown(e) {
         e.preventDefault();
+        isResizing = true;
         startX = e.clientX;
         startY = e.clientY;
         startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10);
         startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10);
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
-    });
+    }
 
     function onMouseMove(e) {
-        element.style.width = (startWidth + e.clientX - startX) + 'px';
-        element.style.height = (startHeight + e.clientY - startY) + 'px';
+        if (isResizing) {
+            const newWidth = startWidth + e.clientX - startX;
+            const newHeight = startHeight + e.clientY - startY;
+            element.style.width = newWidth + 'px';
+            element.style.height = newHeight + 'px';
+        }
     }
 
     function onMouseUp() {
+        isResizing = false;
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
     }
+
+    // Touch events
+    function onTouchStart(e) {
+        e.preventDefault();
+        isResizing = true;
+        const touch = e.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+        startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10);
+        startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10);
+        document.addEventListener('touchmove', onTouchMove);
+        document.addEventListener('touchend', onTouchEnd);
+    }
+
+    function onTouchMove(e) {
+        if (isResizing) {
+            const touch = e.touches[0];
+            const newWidth = startWidth + touch.clientX - startX;
+            const newHeight = startHeight + touch.clientY - startY;
+            element.style.width = newWidth + 'px';
+            element.style.height = newHeight + 'px';
+        }
+    }
+
+    function onTouchEnd() {
+        isResizing = false;
+        document.removeEventListener('touchmove', onTouchMove);
+        document.removeEventListener('touchend', onTouchEnd);
+    }
+
+    // Add event listeners for mouse and touch interactions
+    resizeHandle.addEventListener('mousedown', onMouseDown);
+    resizeHandle.addEventListener('touchstart', onTouchStart);
 }
 
 // Function to create a new note
@@ -198,14 +261,15 @@ function loadNotesFromLocalStorage() {
 function makeDraggable(element) {
     let offsetX, offsetY, isDragging = false;
 
-    element.addEventListener('mousedown', function (e) {
+    // Mouse events
+    function onMouseDown(e) {
         isDragging = true;
         offsetX = e.clientX - element.getBoundingClientRect().left;
         offsetY = e.clientY - element.getBoundingClientRect().top;
         element.classList.add('dragging'); // Add dragging class
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
-    });
+    }
 
     function onMouseMove(e) {
         if (isDragging) {
@@ -221,7 +285,39 @@ function makeDraggable(element) {
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
     }
+
+    // Touch events
+    function onTouchStart(e) {
+        isDragging = true;
+        const touch = e.touches[0];
+        offsetX = touch.clientX - element.getBoundingClientRect().left;
+        offsetY = touch.clientY - element.getBoundingClientRect().top;
+        element.classList.add('dragging'); // Add dragging class
+        document.addEventListener('touchmove', onTouchMove);
+        document.addEventListener('touchend', onTouchEnd);
+    }
+
+    function onTouchMove(e) {
+        if (isDragging) {
+            const touch = e.touches[0];
+            element.style.position = 'absolute';
+            element.style.left = (touch.clientX - offsetX) + 'px';
+            element.style.top = (touch.clientY - offsetY) + 'px';
+        }
+    }
+
+    function onTouchEnd() {
+        isDragging = false;
+        element.classList.remove('dragging'); // Remove dragging class
+        document.removeEventListener('touchmove', onTouchMove);
+        document.removeEventListener('touchend', onTouchEnd);
+    }
+
+    // Add event listeners for mouse and touch interactions
+    element.addEventListener('mousedown', onMouseDown);
+    element.addEventListener('touchstart', onTouchStart);
 }
+
 
 // Load notes from local storage and theme settings when the window loads
 window.onload = function() {
