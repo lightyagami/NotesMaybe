@@ -169,3 +169,40 @@ window.onload = function() {
     document.getElementById('note-label').value = '';
     loadNotesFromLocalStorage();
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || '';
+    document.body.setAttribute('data-theme', savedTheme);
+    updateThemeIcons(savedTheme);
+});
+
+document.getElementById('toggle-theme').addEventListener('click', () => {
+    const currentTheme = document.body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? '' : 'dark';
+    document.body.setAttribute('data-theme', newTheme);
+
+    // Save the selected theme to localStorage
+    localStorage.setItem('theme', newTheme);
+
+    // Update the icon based on the new theme
+    updateThemeIcons(newTheme);
+});
+
+function updateThemeIcons(theme) {
+    if (theme === 'dark') {
+        document.getElementById('sun-icon').style.opacity = '0';
+        document.getElementById('moon-icon').style.opacity = '1';
+    } else {
+        document.getElementById('sun-icon').style.opacity = '1';
+        document.getElementById('moon-icon').style.opacity = '0';
+    }
+}
+
+// Load the saved theme when the page loads
+window.onload = function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.body.setAttribute('data-theme', savedTheme);
+    }
+    loadNotesFromLocalStorage();
+};
