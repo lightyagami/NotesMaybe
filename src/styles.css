@@ -32,15 +32,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative; /* Ensure the body has relative positioning for the button */
-    overflow: hidden; /* Prevent scrollbar from appearing */
+    position: relative;
+    overflow: auto; /* Allow scrolling when content overflows */
 }
 
 /* Style for the theme switcher button */
 .theme-switcher {
-    position: fixed; /* Fixed position to stay in the top right corner */
-    top: 20px; /* Adjust as needed */
-    right: 20px; /* Adjust as needed */
+    position: fixed;
+    top: 20px;
+    right: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,7 +55,7 @@ body {
     cursor: pointer;
     font-size: 20px;
     transition: background 0.3s ease, transform 0.2s ease;
-    z-index: 10; /* Ensure it's on top of other elements */
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,8 +97,8 @@ body {
 .note-input {
     display: flex;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Allows input fields to wrap on smaller screens */
-    gap: 10px; /* Space between input fields */
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .note-input input {
@@ -116,6 +116,7 @@ body {
     gap: 15px;
     width: 100%;
     max-width: 1200px;
+    overflow: auto; /* Allows scrolling within the note grid if needed */
 }
 
 .note-card {
@@ -125,9 +126,10 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
     word-wrap: break-word;
-    max-width: 100%; /* Ensure note cards do not overflow */
-    cursor: move; /* Indicate that the element is draggable */
-    padding-right: 40px; /* Space for the delete button */
+    max-width: 100%;
+    cursor: move;
+    padding-right: 40px;
+    box-sizing: border-box; /* Include padding in width */
 }
 
 /* Resize handle */
@@ -139,13 +141,13 @@ body {
     position: absolute;
     bottom: 5px;
     right: 5px;
-    cursor: nwse-resize; /* Resize cursor */
+    cursor: nwse-resize;
 }
 
 .note-card.dragging {
-    opacity: 0.8; /* Slightly transparent while dragging */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow effect */
-    transition: none; /* Disable transition during dragging */
+    opacity: 0.8;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transition: none;
 }
 
 .note-card .note-label {
@@ -179,20 +181,20 @@ body {
     font-size: 25px;
     position: absolute;
     animation: heartMove linear 1;
-    top: -10vh; /* Start position */
+    top: -10vh;
     z-index: 0;
 }
 
 @keyframes heartMove {
     0% {
-        transform: translateY(-10vh); /* Start position */
+        transform: translateY(-10vh);
         color: var(--heart-start-color);
     }
     50% {
         color: var(--heart-mid-color);
     }
     100% {
-        transform: translateY(100vh); /* End position just below viewport */
+        transform: translateY(100vh);
         color: var(--heart-end-color);
     }
 }
@@ -203,16 +205,16 @@ body {
     background: var(--button-background);
     color: white;
     border: none;
-    border-radius: 50px; /* Rounded button corners */
-    padding: 5px 10px; /* Smaller padding */
+    border-radius: 50px;
+    padding: 5px 10px;
     cursor: pointer;
-    font-size: 12px; /* Smaller font size */
+    font-size: 12px;
     transition: background 0.3s ease, transform 0.2s ease;
-    margin-top: 5px; /* Adjust margin to fit design */
-    display: inline-flex; /* Align icon and text neatly */
-    align-items: center; /* Center icon and text vertically */
-    justify-content: center; /* Center text horizontally */
-    gap: 5px; /* Space between icon and text */
+    margin-top: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 /* Hover effect for the buttons */
@@ -231,26 +233,26 @@ body {
 /* Style for Delete button */
 .delete-button {
     background: transparent;
-    color: #ff6b6b; /* Red color for delete */
+    color: #ff6b6b;
     border: none;
-    font-size: 18px; /* Size of the cross */
+    font-size: 18px;
     cursor: pointer;
     position: absolute;
     top: 10px;
-    right: 10px; /* Position the cross on the top right */
+    right: 10px;
     transition: color 0.3s ease;
-    z-index: 1; /* Ensure it is on top of other content */
+    z-index: 1;
 }
 
 /* Style for Save button */
 .save-button {
-    background: #4caf50; /* Green background for save */
+    background: #4caf50;
 }
 
 /* Button icon styling */
 .note-card button i,
 .note-input button i {
-    font-size: 14px; /* Slightly larger icon */
+    font-size: 14px;
 }
 
 /* Responsive styles for mobile devices */
@@ -266,12 +268,209 @@ body {
     }
     
     .fa-heart {
-        font-size: 20px; /* Smaller hearts */
-        opacity: 0.5; /* Less visible */
+        font-size: 20px;
+        opacity: 0.5;
     }
     
     #toggle-theme {
         font-size: 18px;
         padding: 8px;
     }
+    
+    /* Adjust note card padding and margins for small screens */
+    .note-card {
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .note-input.add-note {
+        padding: 10px;
+    }
+    
+    #search-bar {
+        width: 90%;
+    }
+    
+    .search-container {
+        margin: 10px;
+    }
+}
+
+/* Custom Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--note-card-background);
+    color: var(--text-color);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    width: 90%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1010;
+}
+
+.modal-ok {
+    background: var(--button-background);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-ok:hover {
+    background: var(--button-hover-background);
+    transform: translateY(-2px);
+}
+
+.modal-ok:active {
+    transform: translateY(0);
+}
+
+/* Center the search bar */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+/* Style for the search input */
+#search-bar {
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    width: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    transition: box-shadow 0.3s ease, width 0.3s ease;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Focus effect to mimic Google Keep's search bar */
+#search-bar:focus {
+    outline: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 60%;
+}
+
+/* Placeholder color to match theme */
+#search-bar::placeholder {
+    color: var(--secondary-text-color);
+}
+
+/* Container for the add note */
+.add-note-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Compact note input initially */
+.note-input.add-note {
+    background-color: var(--note-card-background);
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    cursor: text;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    max-width: 100%;
+}
+
+/* Initially hide the title and action buttons */
+.hidden {
+    display: none;
+}
+
+/* Expanded note input */
+.note-input.add-note.expanded {
+    padding: 15px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.note-input.add-note input,
+.note-input.add-note textarea {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: transparent;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    font-size: 16px;
+    resize: none;
+}
+
+/* Textarea should have a minimal height initially, grows as more content is added */
+.note-input.add-note textarea {
+    height: 30px;
+    transition: height 0.2s ease;
+}
+
+/* Note actions like save button appear when the note is expanded */
+.note-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* On hover, make the input a bit more interactive */
+.note-input.add-note:hover {
+    background-color: var(--note-card-background);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Expand button (optional) */
+#add-note-btn {
+    background-color: var(--button-background);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#add-note-btn:hover {
+    background-color: var(--button-hover-background);
 }

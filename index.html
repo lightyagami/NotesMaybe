@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <!-- Search Bar HTML -->
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="Search notes...">
+    </div>
+    
     <div class="note-input">
         <input type="text" id="note-label" placeholder="Label" />
         <input type="text" id="note-text" placeholder="Take a note..." /><br>
@@ -15,12 +20,21 @@
         <button onclick="createNote()">Add Note</button>
     </div>
     <div id="note-grid" class="note-grid"></div>
+
     <div class="theme-switcher">
         <button id="toggle-theme">
             <i id="sun-icon" class="fas fa-sun"></i>
             <i id="moon-icon" class="fas fa-moon"></i>
         </button>
     </div>
+    <!-- Modal Structure -->
+    <div id="custom-modal" class="modal">
+        <div class="modal-content">
+            <span id="modal-close" class="modal-close">&times;</span>
+        <p id="modal-message">Please enter some text.</p>
+        <button id="modal-ok">OK</button>
+    </div>
+</div>
 
     <script src="https://kit.fontawesome.com/4f3ce16e3e.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

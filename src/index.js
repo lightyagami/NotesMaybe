@@ -1,5 +1,36 @@
-const body = document.querySelector("body");
+// Function to show custom modal
+function showModal(message) {
+    document.getElementById('modal-message').innerText = message;
+    document.getElementById('custom-modal').style.display = 'flex';
+}
 
+// Function to hide custom modal
+function hideModal() {
+    document.getElementById('custom-modal').style.display = 'none';
+}
+
+// Add event listeners for modal close button and OK button
+function addModalEventListeners() {
+    // For mouse events
+    document.getElementById('modal-close').addEventListener('click', hideModal);
+    document.getElementById('modal-ok').addEventListener('click', hideModal);
+
+    // For touch events (for mobile devices)
+    document.getElementById('modal-close').addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent default touch behavior
+        hideModal();
+    });
+
+    document.getElementById('modal-ok').addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent default touch behavior
+        hideModal();
+    });
+}
+
+// Call this function to add event listeners when the page loads
+addModalEventListeners();
+
+const body = document.querySelector("body");
 // Function to create decorative hearts
 function createHeart() {
     const heart = document.createElement("div");
@@ -118,7 +149,7 @@ function createNote() {
     const noteLabelText = document.getElementById('note-label').value;
 
     if (noteText.trim() === '') {
-        alert('Please enter some text.');
+        showModal('Please enter some text.');
         return;
     }
 
@@ -349,3 +380,31 @@ function updateThemeIcons(theme) {
         document.getElementById('moon-icon').style.opacity = '0';
     }
 }
+// Function to filter notes based on search query
+function filterNotes() {
+    const query = document.getElementById('search-bar').value.toLowerCase();
+    const notes = document.querySelectorAll('.note-card');
+    let firstVisibleNote = null;
+
+    notes.forEach(note => {
+        const noteLabel = note.querySelector('.note-label').innerText.toLowerCase();
+
+        if (noteLabel.includes(query)) {
+            note.style.display = 'block'; // Show note
+            if (!firstVisibleNote) {
+                firstVisibleNote = note; // Set the first visible note
+            }
+        } else {
+            note.style.display = 'none'; // Hide note
+        }
+    });
+
+    // Scroll to the first visible note if it exists
+    if (firstVisibleNote) {
+        firstVisibleNote.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
+
+// Add event listener to search bar for input events
+document.getElementById('search-bar').addEventListener('input', filterNotes);
+
