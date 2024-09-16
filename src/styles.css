@@ -33,7 +33,7 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative; /* Ensure the body has relative positioning for the button */
-    overflow: hidden; /* Prevent scrollbar from appearing */
+    overflow: auto;
 }
 
 /* Style for the theme switcher button */
