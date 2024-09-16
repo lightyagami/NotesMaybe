@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(45deg, pink, violet);
+    background: #faf6f4; /* Change to solid color */
     margin: 0;
     padding: 20px;
     display: flex;
@@ -33,14 +33,14 @@ body {
 }
 
 .note-card {
-    background-color: transparent;
+    background-color: #f7e8e8; /* Ensure valid hex color code */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
     word-wrap: break-word;
+    max-width: 100%; /* Ensure note cards do not overflow */
 }
-
 
 .note-card .note-label {
     font-size: 12px;
@@ -79,21 +79,21 @@ body {
 @keyframes heartMove {
     0% {
         transform: translateY(-10vh);
-        color: rgb(255, 255, 0); /* yellow */
+        color: #f1d8d9; /* Red */
     }
     50% {
-        color: rgb(60, 0, 60); /* purple */
+        color: #f1d8d9; /* Light pink */
     }
     100% {
         transform: translateY(110vh);
-        color: rgb(255, 255, 0); /* yellow */
+        color: rgb(255, 0, 0); /* Red */
     }
 }
 
 /* Style for the "Save as Image" button and "Add Note" button */
 .note-card button,
 .note-input button {
-    background: linear-gradient(45deg, #6a5acd, #7b68ee);
+    background: linear-gradient(45deg, #c99597, #c99597);
     color: white;
     border: none;
     border-radius: 5px;
@@ -117,4 +117,3 @@ body {
 .note-input button:active {
     transform: translateY(0);
 }
-
