@@ -24,6 +24,8 @@
     <div class="note-input" id="note-input">
         <input type="text" id="note-label" placeholder="Label" />
         <input type="text" id="note-text" placeholder="Take a note..." />
+        <input type="file" id="note-image" accept="image/*" />
+        <div id="image-preview" class="image-preview"></div> <!-- Image preview container -->
         <div class="note-actions">
             <button onclick="createNote()">Save</button>
             <button id="cancel-note-btn">Cancel</button>
@@ -32,6 +34,7 @@
 
     <div id="note-grid" class="note-grid"></div>
 
+    <!--Theme Switcher-->
     <div class="theme-switcher">
         <button id="toggle-theme">
             <i id="sun-icon" class="fas fa-sun"></i>

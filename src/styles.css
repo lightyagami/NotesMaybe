@@ -130,6 +130,37 @@ body {
     padding-right: 40px; /* Space for the delete button */
 }
 
+.note-image {
+    max-width: 100%; /* Resize image to fit within the card */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Ensure images within note cards are responsive */
+.note-card .note-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Keeps aspect ratio */
+    display: block; /* Removes extra space below image */
+    margin: 0 auto; /* Center the image */
+}
+
+/* Ensure note-card has relative positioning to contain images */
+.note-card {
+    position: relative; /* Required for absolute positioning of images */
+    overflow: hidden; /* Prevents images from overflowing the card */
+}
+
+.image-preview {
+    margin-top: 10px;
+}
+
+.image-preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+}
+
 /* Resize handle */
 .resize-handle {
     width: 15px;

@@ -163,10 +163,31 @@ function makeResizable(element) {
     resizeHandle.addEventListener('touchstart', onTouchStart);
 }
 
+document.getElementById('note-image').addEventListener('change', function() {
+    const file = this.files[0];
+    const previewContainer = document.getElementById('image-preview');
+
+    // Clear previous preview
+    previewContainer.innerHTML = '';
+
+    if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            previewContainer.appendChild(img);
+        };
+        
+        reader.readAsDataURL(file);
+    }
+});
+
 // Function to create a new note
 function createNote() {
     const noteText = document.getElementById('note-text').value;
     const noteLabelText = document.getElementById('note-label').value;
+    const noteImageInput = document.getElementById('note-image').files[0];
 
     if (noteText.trim() === '') {
         showModal('Please enter some text.');
@@ -191,6 +212,24 @@ function createNote() {
     noteContent.className = 'note-content';
     noteContent.innerText = noteText;
     noteCard.appendChild(noteContent);
+
+    // Add image if exists
+    if (noteImageInput) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const noteImage = document.createElement('img');
+            noteImage.src = e.target.result;
+            noteImage.className = 'note-image';
+            noteCard.appendChild(noteImage);
+
+            // Save the note with image data to local storage
+            saveAllNotesToLocalStorage();
+        };
+        reader.readAsDataURL(noteImageInput);
+    } else {
+        // Save the note without an image to local storage
+        saveAllNotesToLocalStorage();
+    }
 
     // Create save button
     const saveButton = document.createElement('button');
@@ -223,6 +262,8 @@ function createNote() {
     // Clear input fields
     document.getElementById('note-text').value = '';
     document.getElementById('note-label').value = '';
+    document.getElementById('note-image').value = '';
+    document.getElementById('image-preview').innerHTML = ''; // Clear image preview
 }
 
 // Function to delete a note
@@ -235,15 +276,22 @@ function deleteNote(noteCard) {
 function saveAllNotesToLocalStorage() {
     const notes = [];
     document.querySelectorAll('.note-card').forEach(noteCard => {
+        const rect = noteCard.getBoundingClientRect();
         const noteData = {
             id: noteCard.id,
             text: noteCard.querySelector('.note-content').innerText,
-            label: noteCard.querySelector('.note-label') ? noteCard.querySelector('.note-label').innerText : ''
+            label: noteCard.querySelector('.note-label') ? noteCard.querySelector('.note-label').innerText : '',
+            image: noteCard.querySelector('.note-image') ? noteCard.querySelector('.note-image').src : '', // Save image data
+            position: {
+                top: rect.top + window.scrollY, // Convert to page coordinates
+                left: rect.left + window.scrollX
+            }
         };
         notes.push(noteData);
     });
     localStorage.setItem('notes', JSON.stringify(notes));
 }
+
 
 // Function to save note as an image
 function saveNoteAsImage(noteElement) {
@@ -280,6 +328,19 @@ function loadNotesFromLocalStorage() {
         noteContent.className = 'note-content';
         noteContent.innerText = note.text;
         noteCard.appendChild(noteContent);
+
+        // Add image if exists
+        if (note.image) {
+            const noteImage = document.createElement('img');
+            noteImage.src = note.image;
+            noteImage.className = 'note-image';
+            noteCard.appendChild(noteImage);
+        }
+
+        // Restore position
+        noteCard.style.position = 'absolute';
+        noteCard.style.top = note.position.top + 'px';
+        noteCard.style.left = note.position.left + 'px';
 
         // Create save button
         const saveButton = document.createElement('button');
